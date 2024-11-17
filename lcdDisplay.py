@@ -1,9 +1,14 @@
 import time
 import board
 import adafruit_dht
+from RPLCD.i2c import CharLCD
 
-# Initialize the DHT device, with data pin connected to:
+# Initialize the DHT device and LCD
 dhtDevice = adafruit_dht.DHT22(board.D4)
+lcd = CharLCD('PCF8574', 0x27)
+
+# Clear the display initially
+lcd.clear()
 
 while True:
     try:
@@ -11,8 +16,11 @@ while True:
         temperature_c = dhtDevice.temperature
         humidity = dhtDevice.humidity
 
-        # Print the values in Celsius and humidity only
-        print("Temp: {:.1f} C    Humidity: {}%".format(temperature_c, humidity))
+        # Clear the display and write the values on the LCD
+        lcd.clear()
+        lcd.write_string("T: {:.1f}".format(temperature_c))  # First line
+        lcd.write_string("\nH: {}%".format(humidity))              # Second line
+
 
     except RuntimeError as error:
         # Errors happen fairly often with DHT sensors, just keep going
@@ -23,5 +31,6 @@ while True:
         dhtDevice.exit()
         raise error
 
+    # Keep the values displayed for a while before the next update
     time.sleep(2.0)
 
