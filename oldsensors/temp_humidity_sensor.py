@@ -2,7 +2,7 @@ import time
 import board
 import adafruit_dht
 
-# Initialize the DHT device, with data pin connected to:
+# Initialize the DHT device, with data pin connected to: (Here gpio 4)
 dhtDevice = adafruit_dht.DHT22(board.D4)
 
 while True:
@@ -15,7 +15,6 @@ while True:
         print("Temp: {:.1f} C    Humidity: {}%".format(temperature_c, humidity))
 
     except RuntimeError as error:
-        # Errors happen fairly often with DHT sensors, just keep going
         print(error.args[0])
         time.sleep(2.0)
         continue

@@ -23,14 +23,14 @@ while True:
 
 
     except RuntimeError as error:
-        # Errors happen fairly often with DHT sensors, just keep going
+        # Errors handeling
         print(error.args[0])
-        time.sleep(2.0)
+        time.sleep(3.0)
         continue
     except Exception as error:
         dhtDevice.exit()
         raise error
 
     # Keep the values displayed for a while before the next update
-    time.sleep(2.0)
+    time.sleep(3.0)
 
