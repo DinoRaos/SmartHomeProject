@@ -1,37 +1,37 @@
 import time
 import board
+import threading
+import streamlit as st
 from sensors.dht22 import DHT22Sensor
 from sensors.flame_sensor import FlameSensor
 from sensors.gas_sensor import GasSensor
 from sensors.light_sensor import LightSensor
 from database.db import Database
-from sensors.lcd_display import LCDDisplay  # Import der LCDDisplay-Klasse
+from sensors.lcd_display import LCDDisplay
 
-def main():
+# Globale Event-Variable für den Stop-Mechanismus
+stop_thread_event = threading.Event()
+
+def run_sensors(selected_room, stop_event):
     db = Database()
 
-    # Raum erstellen (wenn noch nicht vorhanden)
-    room_name = "Schlafzimmer"
-    room_id = db.get_room_id_by_name(room_name)
-
-    if room_id is None:
-        db.insert_room(room_name)
-        room_id = db.get_room_id_by_name(room_name)
+    # ID des ausgewählten Raums holen
+    room_id = db.get_room_id_by_name(selected_room)
 
     # Sensoren initialisieren
-    dht22 = DHT22Sensor(pin=board.D4)  # DHT22 Sensor an GPIO4
-    light_sensor = LightSensor(channel=0)  # KYR-08 an Kanal 0 von MCP
-    flame_sensor = FlameSensor(channel=1)  # Flame-Sensor an Kanal 1 von MCP
-    gas_sensor = GasSensor(channel=2)  # MQ-2 Gas-Sensor an Kanal 2 von MCP
+    dht22 = DHT22Sensor(pin=board.D4)
+    light_sensor = LightSensor(channel=0)
+    flame_sensor = FlameSensor(channel=1)
+    gas_sensor = GasSensor(channel=2)
 
     # LCD Display initialisieren
-    lcd = LCDDisplay(room_name, {"temperature": 0.0, "humidity": 0.0}, 0.0, 0.0)
+    lcd = LCDDisplay(selected_room, {"temperature": 0.0, "humidity": 0.0}, 0.0, 0.0)
 
-    # Starte die Anzeige im Hintergrund
+    # Starte die Anzeige im Hintergrund 
     lcd_process = threading.Thread(target=lcd.run)
     lcd_process.start()
 
-    while True:
+    while not stop_event.is_set():  # Überprüfe regelmäßig, ob das Event gesetzt wurde
         try:
             # DHT22 (Temperatur/Feuchtigkeit)
             dht_data = dht22.read_data()
@@ -61,12 +61,12 @@ def main():
             lcd.gas_level = gas_level
 
         except Exception as e:
-            # Fehlerbehandlung und Loggen des Fehlers
             print(f"Fehler beim Auslesen eines Sensors: {str(e)}")
 
-        # Schlafzeit (zwischen den Sensorablesungen)
-        time.sleep(60)
+        time.sleep(10)
 
-if __name__ == "__main__":
-    import threading
-    main()
+    # WICHTIG: DHT22 muss immer mit exit geschlossen werden sonst pin 4 error + LCD cleanup
+    print("Sensorprozess gestoppt.")
+    lcd.stop()
+    dht22.exit()
+    lcd_process.join()
