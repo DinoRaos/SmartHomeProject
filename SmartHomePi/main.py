@@ -63,7 +63,7 @@ def run_sensors(selected_room, stop_event):
         except Exception as e:
             print(f"Fehler beim Auslesen eines Sensors: {str(e)}")
 
-        time.sleep(10)
+        time.sleep(60)
 
     # WICHTIG: DHT22 muss immer mit exit geschlossen werden sonst pin 4 error + LCD cleanup
     print("Sensorprozess gestoppt.")

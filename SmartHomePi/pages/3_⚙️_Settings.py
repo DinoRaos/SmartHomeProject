@@ -4,6 +4,11 @@ from database.db import Database
 db = Database()
 
 def main():
+    st.set_page_config(
+        page_title="Settings",
+        page_icon="⚙️",
+        layout="centered"
+    )
     st.title("⚙️ Raumverwaltung")
     
     # Raum hinzufügen / Prüfen

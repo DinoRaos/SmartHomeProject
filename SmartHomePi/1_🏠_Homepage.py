@@ -12,6 +12,11 @@ def stop_sensors():
 
 # Funktion für das Haupt-Dashboard
 def main():
+    st.set_page_config(
+        page_title="Homepage",
+        page_icon="🏠",
+        layout="centered"
+    )
     st.title("🏠 Smart Home Dashboard")
     
     st.write("Willkommen! Hier können Sie die Sensoren für einen Raum starten und die aktuellen Werte sehen.")

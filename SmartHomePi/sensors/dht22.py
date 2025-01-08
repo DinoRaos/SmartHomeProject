@@ -24,7 +24,7 @@ class DHT22Sensor:
             else:
                 return None
         except RuntimeError as e:
-            print(f"Error reading sensor: {e}")
+            print(f"Fehler beim DHT22 Sensor: {e}")
             return None
 
     def exit(self):
@@ -32,4 +32,4 @@ class DHT22Sensor:
         Stopt den Sensor und räumt auf, indem die Ressourcen freigegeben werden.
         """
         self.dht_device.exit()
-        print("Sensor has been deactivated and cleaned up.")
+        print("Sensor gestoppt.")

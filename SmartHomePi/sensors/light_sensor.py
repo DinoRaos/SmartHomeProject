@@ -16,7 +16,7 @@ class LightSensor:
         """Konvertiere den Rohwert in Lux."""
         raw_value = self.read_raw_value()
 
-        # Inverse Skalierung: 1 (dunkel) → 0 Lux, 0 → 1000 Lux (Beispiel)
+        # Inverse Skalierung: 1 (dunkel) → 0 Lux, 0 → 1000 Lux (Beispiel) (keine Kali)
         max_lux = 1000
         lux = (1 - raw_value) * max_lux  # Dunkel: 0 Lux, Hell: max_lux
         return round(lux, 2)

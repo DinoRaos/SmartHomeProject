@@ -1,0 +1,29 @@
+div.stMetric {
+    background-color: #34343c;
+    border: 2px solid;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 10px;
+    font-size: larger;
+    border-style: hidden;
+
+    /* Zentriert nur den Text */
+    text-align: center;
+    font-weight: bold;
+}
+
+div.stMetric label p {
+    text-align:center;
+    font-size: larger;
+    font-weight: bolder;
+}
+
+div.stMetric label {
+    display: block; /* Überschrift als Block-Element behandeln */
+    margin-bottom: 10px; /* Abstand zwischen der Überschrift und dem Wert */
+}
+
+div.stHeading {
+    text-align: center;
+}
+

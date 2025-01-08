@@ -22,7 +22,7 @@ class LCDDisplay:
         self.dht_data = dht_data
         self.light_level = light_level
         self.gas_level = gas_level
-        self._stop_event = threading.Event()  # Event für das Stoppen des Threads
+        self._stop_event = threading.Event()
 
     def display(self):
         try:
@@ -60,7 +60,7 @@ class LCDDisplay:
         Führt die Anzeige der Werte in regelmäßigen Abständen aus.
         Der Prozess kann über das _stop_event gestoppt werden.
         """
-        while not self._stop_event.is_set():  # Prüfen, ob das Stop-Event gesetzt wurde
+        while not self._stop_event.is_set():
             self.display()
             time.sleep(3)
         print("LCD Display wurde gestoppt.")

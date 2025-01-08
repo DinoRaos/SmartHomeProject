@@ -16,7 +16,7 @@ class GasSensor:
         """Konvertiere den Rohwert in ppm."""
         raw_value = self.read_raw_value()
 
-        # Beispiel: Rohwert in ppm umrechnen
+        #Rohwert in ppm umrechnen (keine Kali)
         max_ppm = 1000
         ppm = raw_value * max_ppm
         return round(ppm, 2)

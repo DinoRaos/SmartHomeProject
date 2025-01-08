@@ -94,6 +94,20 @@ class Database:
             return result[0]
         return None
 
+    def get_room_name_by_id(self, room_id):
+        """
+        Gibt den Namen des Raums anhand der ID zurück.
+        
+        :param room_id: Die ID des Raumes, dessen Name abgerufen werden soll.
+        :return: Der Name des Raums oder None, falls der Raum nicht existiert.
+        """
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT name FROM rooms WHERE id = ?", (room_id,))
+        result = cursor.fetchone()
+        if result:
+            return result[0]
+        return None
+
     def insert_data(self, table, room_id, value1, value2=None):
         """
         Fügt Sensor-Daten in die entsprechende Tabelle ein.
